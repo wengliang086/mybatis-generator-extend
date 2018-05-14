@@ -142,7 +142,7 @@ public class Generator {
                             p.setProperty("withBLOBs", "");
                         }
 
-                        String daoPackage = initProperties.getProperty("targetPackage");
+                        String daoPackage = initProperties.getProperty("basePackage");
                         p.setProperty("dao.package", daoPackage);
 
                         File daoDirectory = getDirectory(context.getJavaClientGeneratorConfiguration().getTargetProject(), daoPackage);

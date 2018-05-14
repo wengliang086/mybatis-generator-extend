@@ -114,9 +114,7 @@ public class DaoTestCaseCodeGenerator {
 
         Connection connection = druidDataSource.getConnection();
         Statement statement = connection.createStatement();
-//        URL url=  URL.valueOf(connectionConfiguration.getConnectionURL());
-//        String path = url.getPath();
-        String path = "";
+        String path = parseDBName(connectionConfiguration.getConnectionURL());
 
         statement.execute("select  * from information_schema.columns where table_name = '" + tableName + "' and table_schema = '" + path + "' ");
         ResultSet resultSet = statement.getResultSet();
@@ -149,6 +147,15 @@ public class DaoTestCaseCodeGenerator {
             }
         }
         return new Object[]{primaryInfo, columnNames};
+    }
+    
+    private static String parseDBName(String url) {
+    	int i = url.indexOf("?"); // seperator between body and parameters
+    	url = url.substring(0, i);
+    	i = url.indexOf("://");
+    	url = url.substring(i + 3);
+        i = url.indexOf("/");
+        return url.substring(i + 1);
     }
 
     private static void _generate(Class entityClass, String daoPackage, String voPackage, String tableName, PrimaryKey primaryKey, List<String> columns, IntrospectedTable introspectedTable) throws IOException, ParseException {

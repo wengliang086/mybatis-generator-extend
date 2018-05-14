@@ -1,0 +1,7 @@
+<!--## 定义变量类型，未定义的变量以Object类型处理 -->
+#set(String domainClassName)
+#set(PropertyDescriptor firstArrtibute)
+
+
+ ${uncapitalize(domainClassName)}
+

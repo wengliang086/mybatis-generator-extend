@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+           http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/mvc     http://www.springframework.org/schema/mvc/spring-mvc.xsd
+           http://www.springframework.org/schema/tx      http://www.springframework.org/schema/tx/spring-tx.xsd
+       ">
+	<!-- 替换为当前项目的mybatis目录 -->
+    <context:component-scan base-package="com.my.fastaccess.community.dao.mybatis.impl*" />
+
+    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:${env.dir}/integration_test_jdbc.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer" class=" org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="properties" ref="configProperties" />
+    </bean>
+
+    <!-- dataSource start -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize">
+            <value>1</value>
+        </property>
+        <property name="minIdle">
+            <value>1</value>
+        </property>
+        <property name="maxActive">
+            <value>220</value>
+        </property>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait">
+            <value>800</value>
+        </property>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis">
+            <value>60000</value>
+        </property>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis">
+            <value>300000</value>
+        </property>
+
+        <property name="validationQuery">
+            <value>SELECT 'x'</value>
+        </property>
+        <property name="testWhileIdle">
+            <value>true</value>
+        </property>
+        <property name="testOnBorrow">
+            <value>false</value>
+        </property>
+        <property name="testOnReturn">
+            <value>false</value>
+        </property>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小.mysql可以配置为false -->
+        <property name="poolPreparedStatements">
+            <value>false</value>
+        </property>
+        <property name="maxOpenPreparedStatements">
+            <value>20</value>
+        </property>
+
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters">
+            <value>mergeStat</value>
+        </property>
+
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+   	    <!-- 替换为当前项目的mybatis目录 -->
+        <property name="basePackage" value="com.my.fastaccess.community.dao.mybatis.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+</beans>

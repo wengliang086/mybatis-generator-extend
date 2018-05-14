@@ -1,0 +1,105 @@
+#set(String entityClassName)
+#set(PropertyDescriptor firstPropertyDescriptor)
+#set(PrimaryKey primaryKey)
+#set(Column column)
+#set(String primaryKeyClassName)
+#set(Column primaryKeyColumn)
+#set(PropertyDescriptor blobPropertyDescriptor)
+package ${daoTestCasePackage};
+
+
+import java.sql.SQLException;
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+import com.my.fastaccess.common.hutil.builder.ObjectBuilder;
+
+import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import com.my.fastaccess.common.generator.mybatis.test.util.DatabaseUtil;
+import com.my.fastaccess.common.hutil.test.IntegrationTests;
+import com.my.fastaccess.common.generator.mybatis.test.util.Util;
+import ${voPackage}.${entityClassName};
+#for(String _package:importPackages)
+import ${_package};
+#end
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@Category(IntegrationTests.class)
+@ContextConfiguration(locations = { "/integration_test/db.xml" })
+public class ${entityClassName}DaoTest {
+    @Resource
+    private ${entityClassName}Dao  ${uncapitalize(entityClassName)}Dao;
+    
+    @Resource
+    private DataSource dataSource ;
+    
+ #[@Value("#{configProperties['database.name']}")]#
+    private String databaseName;;
+    
+    @Before
+    public void copyTable() throws SQLException{
+      DatabaseUtil.dropTable(dataSource,"${tableName}");
+      DatabaseUtil.copyTable(dataSource, databaseName, "${tableName}");
+    }
+        
+    @After
+    public  void dropTable() throws SQLException{
+      DatabaseUtil.dropTable(dataSource,"${tableName}");
+    }
+    
+    @Test
+    public void testCRUD(){
+        ${entityClassName} ${uncapitalize(entityClassName)} = ObjectBuilder.build(${entityClassName}.class#for(String excludePropertyName:excludePropertyNames),"#{excludePropertyName}" #end);
+        #if(primaryKey.incr )
+        Assert.assertNull(${uncapitalize(entityClassName)}.get${capitalize(primaryKeyColumn.javaProperty)}());
+        #end
+        
+        ${primaryKeyClassName} primaryKey = #if(primaryKey.composite)new ${primaryKeyClassName}()#else()$!{getValue(primaryKeyColumn.type,primaryKeyColumn.javaProperty)}#end;
+        #if(primaryKey.composite)
+        #for(Column column:primaryKey.columns)
+        primaryKey.set${capitalize(column.javaProperty)}($!{getValue(column.type,column.javaProperty)});
+        #end
+        #end
+        
+        ${entityClassName} ${uncapitalize(entityClassName)}1 = ${uncapitalize(entityClassName)}Dao.get(primaryKey);               
+        Assert.assertNull(${uncapitalize(entityClassName)}1);
+        
+        ${uncapitalize(entityClassName)}Dao.save(${uncapitalize(entityClassName)});
+        #if(primaryKey.composite)
+         #for(Column column:primaryKey.columns)
+         Assert.assertEquals(primaryKey.get${capitalize(column.javaProperty)}(),${uncapitalize(entityClassName)}.get${capitalize(column.javaProperty)}());
+         #end
+        #else
+         Assert.assertEquals(primaryKey,${uncapitalize(entityClassName)}.get${capitalize(primaryKeyColumn.javaProperty)}());
+        #end
+        
+        ${entityClassName} ${uncapitalize(entityClassName)}2 = ${uncapitalize(entityClassName)}Dao.get(primaryKey);
+        Assert.assertTrue(Util.equals(${uncapitalize(entityClassName)}2,${uncapitalize(entityClassName)} ));
+
+        ${uncapitalize(entityClassName)}2.set${capitalize(firstPropertyDescriptor.name)}($!{getValue(firstPropertyDescriptor.propertyType,firstPropertyDescriptor.name)});
+       	#if(hasBlobField)
+     	${uncapitalize(entityClassName)}2.set${capitalize(blobPropertyDescriptor.name)}($!{getValueAndAppend12345(blobPropertyDescriptor.propertyType,blobPropertyDescriptor.name)});  	
+       	#end
+        ${uncapitalize(entityClassName)}Dao.update(${uncapitalize(entityClassName)}2);
+        ${entityClassName} ${uncapitalize(entityClassName)}3 = ${uncapitalize(entityClassName)}Dao.get(primaryKey);
+        Assert.assertTrue(Util.equals(${uncapitalize(entityClassName)}2,${uncapitalize(entityClassName)}3));
+        
+        ${uncapitalize(entityClassName)}Dao.delete(primaryKey);
+        ${entityClassName} ${uncapitalize(entityClassName)}4 = ${uncapitalize(entityClassName)}Dao.get(primaryKey);
+        Assert.assertNull(${uncapitalize(entityClassName)}4);
+    }
+    
+    ////***自定义开始****/
+    //***自定义结束****////
+   
+
+}

@@ -1,0 +1,42 @@
+package ${dao.package}.mybatis.impl;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Repository;
+
+import ${dao.package}.${mybatis.vo.name}Dao;
+import ${mapper.package}.${mybatis.vo.name}Mapper;
+import ${dao.package}.mybatis.vo.${mybatis.vo.name};
+import ${primary.key.fulltype};
+
+@Repository
+public class ${mybatis.vo.name}DaoImpl implements ${mybatis.vo.name}Dao {
+	
+	@Resource
+	private ${mybatis.vo.name}Mapper ${mybatis.vo.name.uncapitalize}Mapper;
+
+	@Override
+	public void save(${mybatis.vo.name} ${mybatis.vo.name.uncapitalize}){
+		${mybatis.vo.name.uncapitalize}Mapper.insert(${mybatis.vo.name.uncapitalize});
+	}
+
+	@Override
+	public ${mybatis.vo.name} get(${primary.key.type} ${primary.key.name}) {
+		return ${mybatis.vo.name.uncapitalize}Mapper.selectByPrimaryKey(${primary.key.name});
+	}
+
+	@Override
+	public void update(${mybatis.vo.name} ${mybatis.vo.name.uncapitalize}) {
+		${mybatis.vo.name.uncapitalize}Mapper.updateByPrimaryKey${withBLOBs}(${mybatis.vo.name.uncapitalize});
+	}
+
+	@Override
+	public void delete(${primary.key.type} ${primary.key.name}) {
+		${mybatis.vo.name.uncapitalize}Mapper.deleteByPrimaryKey(${primary.key.name});
+	}
+	
+	 
+	////*******自定义开始********//
+	//**********自定义结束*****////
+	
+}

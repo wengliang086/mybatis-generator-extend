@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+
+<generatorConfiguration>
+    <properties resource="mybatis/init.properties"/>
+
+    <classPathEntry location="${classPathEntry}"/>
+    <context id="context1">
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${driverClass}"
+                        connectionURL="${connectionURL}"
+                        userId="${user}"
+                        password="${password}"/>
+
+        <javaModelGenerator targetPackage="${basePackage}.mybatis.vo" targetProject="${voPackage}"/>
+        <sqlMapGenerator targetPackage="${basePackage}.mybatis.mapper" targetProject="${targetProject}"/>
+        <javaClientGenerator targetPackage="${basePackage}.mybatis.mapper" targetProject="${targetProject}"
+                             type="XMLMAPPER"/>
+
+        <table schema="db_user" tableName="u_login_info" domainObjectName="UserLoginInfo">
+            <generatedKey column="uid" sqlStatement="MySql" identity="true"/>
+        </table>
+        <!--<table schema="access" tableName="p_channel_state" domainObjectName="ChannelState"/>-->
+
+    </context>
+</generatorConfiguration>
+

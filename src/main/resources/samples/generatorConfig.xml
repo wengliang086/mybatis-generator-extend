@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+    <properties resource="mybatis/init.properties"/>
+
+
+    <classPathEntry location="${classPathEntry}"/>
+    <context id="context1">
+        <jdbcConnection driverClass="${driverClass}" connectionURL="${connectionURL}" userId="${user}"
+                        password="${password}"/>
+
+
+        <javaModelGenerator targetPackage="${targetPackage}.mybatis.vo" targetProject="${voPackage}"/>
+        <sqlMapGenerator targetPackage="${targetPackage}.mybatis.mapper" targetProject="${targetProject}"/>
+        <javaClientGenerator targetPackage="${targetPackage}.mybatis.mapper" targetProject="${targetProject}"
+                             type="XMLMAPPER"/>
+        <table schema="access" tableName="configs" domainObjectName="ConfigsInfo"></table>
+        <table schema="access" tableName="p_audit_version" domainObjectName="AuditVersion"></table>
+        <table schema="access" tableName="p_channel_info" domainObjectName="ChannelInfo">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table schema="access" tableName="p_channel_state" domainObjectName="ChannelState"></table>
+        <table schema="access" tableName="p_install_info" domainObjectName="InstallInfo"></table>
+        <table schema="access" tableName="p_package_info" domainObjectName="PackageInfo">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+
+        <table schema="access" tableName="p_product_info" domainObjectName="ProductInfo">
+            <generatedKey column="product_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table schema="access" tableName="p_push_info" domainObjectName="PushInfo"></table>
+        <table schema="access" tableName="p_server_info" domainObjectName="ServerInfo"></table>
+        <table schema="access" tableName="p_sign_info" domainObjectName="SignInfo">
+            <generatedKey column="sign_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table schema="access" tableName="p_version" domainObjectName="ProductVersion">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table schema="access" tableName="u_open_user" domainObjectName="OpenUser">
+            <generatedKey column="open_id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table schema="access" tableName="u_server_info" domainObjectName="UserServerInfo"></table>
+
+    </context>
+</generatorConfiguration>
+

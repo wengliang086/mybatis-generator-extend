@@ -7,12 +7,9 @@
 #set(PropertyDescriptor blobPropertyDescriptor)
 package ${daoTestCasePackage};
 
-
 import java.sql.SQLException;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
-
-import com.my.fastaccess.common.hutil.builder.ObjectBuilder;
 
 import org.junit.Assert;
 import org.junit.After;
@@ -23,14 +20,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import com.my.fastaccess.common.generator.mybatis.test.util.DatabaseUtil;
-import com.my.fastaccess.common.hutil.test.IntegrationTests;
-import com.my.fastaccess.common.generator.mybatis.test.util.Util;
+import com.my.util.mybatis.test.util.DatabaseUtil;
+import com.my.util.mybatis.test.util.IntegrationTests;
+import com.my.util.mybatis.test.util.ObjectBuilder;
+import com.my.util.mybatis.test.util.Util;
 import ${voPackage}.${entityClassName};
 #for(String _package:importPackages)
 import ${_package};
 #end
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Category(IntegrationTests.class)

@@ -60,7 +60,7 @@ public class DaoTestCaseCodeGenerator {
             Field propertiesField = HConfigurationParser.class.getDeclaredField("properties");
             propertiesField.setAccessible(true);
             Properties initProperties = (Properties) propertiesField.get(cp);
-            targetPackage = initProperties.getProperty("targetPackage");
+            targetPackage = initProperties.getProperty("basePackage");
             tableConfigurations = context.getTableConfigurations();
             jdbcConnectionConfiguration = context.getJdbcConnectionConfiguration();
         } catch (Exception e) {

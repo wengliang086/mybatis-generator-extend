@@ -26,6 +26,8 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 public class Generator {
 
+    public static List<IntrospectedTable> itrospectedTables;
+
     public static void generate() {
         generate(null);
     }
@@ -101,7 +103,7 @@ public class Generator {
 
             Field field = Context.class.getDeclaredField("introspectedTables");
             field.setAccessible(true);
-            List<IntrospectedTable> itrospectedTables = (List<IntrospectedTable>) field.get(context);
+            itrospectedTables = (List<IntrospectedTable>) field.get(context);
             Properties p = new Properties();
 
             ClassPathResource daoPathResource = new ClassPathResource("mybatis/dao.template");
@@ -210,7 +212,7 @@ public class Generator {
         Files.write(source, file, Charsets.UTF_8);
     }
 
-    private static String merge(String source, String oldSource) {
+    public static String merge(String source, String oldSource) {
         List<String> sourceImports = findImports(source);
         List<String> oldSourceImports = findImports(oldSource);
         List<String> mergeImports = mergeImports(sourceImports, oldSourceImports);

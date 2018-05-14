@@ -39,7 +39,7 @@ public class ${entityClassName}DaoTest {
     @Resource
     private DataSource dataSource ;
     
- #[@Value("#{configProperties['database.name']}")]#
+    #[@Value("#{configProperties['database.name']}")]#
     private String databaseName;;
     
     @Before

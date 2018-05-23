@@ -17,9 +17,11 @@
                         connectionURL="${connectionURL}"
                         userId="${user}"
                         password="${password}"/>
-
+        <!-- 生成模型的包名和位置-->
         <javaModelGenerator targetPackage="${basePackage}.mybatis.vo" targetProject="${voPackage}"/>
-        <sqlMapGenerator targetPackage="${basePackage}.mybatis.mapper" targetProject="${targetProject}"/>
+        <!-- 生成映射文件的包名和位置-->
+        <sqlMapGenerator targetPackage="${mapperPackage}" targetProject="${mapperProject}"/>
+        <!-- 生成DAO的包名和位置-->
         <javaClientGenerator targetPackage="${basePackage}.mybatis.mapper" targetProject="${targetProject}"
                              type="XMLMAPPER"/>
 

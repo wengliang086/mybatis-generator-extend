@@ -23,7 +23,10 @@
         <javaClientGenerator targetPackage="${basePackage}.mybatis.mapper" targetProject="${targetProject}"
                              type="XMLMAPPER"/>
 
-        <table schema="db_user" tableName="u_login_info" domainObjectName="UserLoginInfo">
+        <!--<table schema="db_user" tableName="u_login_info" domainObjectName="UserLoginInfo">
+            <generatedKey column="uid" sqlStatement="MySql" identity="true"/>
+        </table>-->
+        <table schema="thinker" tableName="user_info" domainObjectName="UserInfo">
             <generatedKey column="uid" sqlStatement="MySql" identity="true"/>
         </table>
         <!--<table schema="access" tableName="p_channel_state" domainObjectName="ChannelState"/>-->

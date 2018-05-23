@@ -98,6 +98,7 @@ public class Generator {
             Context context = contexts.get(0);
             JavaModelGeneratorConfiguration javaModelGeneratorConfiguration = context.getJavaModelGeneratorConfiguration();
             SqlMapGeneratorConfiguration sqlMapGeneratorConfiguration = context.getSqlMapGeneratorConfiguration();
+            JavaClientGeneratorConfiguration javaClientGeneratorConfiguration = context.getJavaClientGeneratorConfiguration();
             List<TableConfiguration> tableConfigurations = context.getTableConfigurations();
             //System.out.println(javaClientGeneratorConfiguration.getImplementationPackage());
 
@@ -117,7 +118,7 @@ public class Generator {
                 for (IntrospectedTable itable : itrospectedTables) {
                     if (tc.getTableName().equals(itable.getTableConfiguration().getTableName())) {
 
-                        p.setProperty("mapper.package", sqlMapGeneratorConfiguration.getTargetPackage());
+                        p.setProperty("mapper.package", javaClientGeneratorConfiguration.getTargetPackage());
                         p.setProperty("mybatis.vo.name", tc.getDomainObjectName());
                         p.setProperty("mybatis.vo.package", javaModelGeneratorConfiguration.getTargetPackage());
                         p.setProperty("mybatis.vo.name.uncapitalize", StringUtils.uncapitalize(tc.getDomainObjectName()));
@@ -145,15 +146,15 @@ public class Generator {
                         String daoPackage = initProperties.getProperty("basePackage");
                         p.setProperty("dao.package", daoPackage);
 
-                        File daoDirectory = getDirectory(context.getJavaClientGeneratorConfiguration().getTargetProject(), daoPackage);
+                        File daoDirectory = getDirectory(javaClientGeneratorConfiguration.getTargetProject(), daoPackage);
 
                         File baseDaoFile = new File(daoDirectory, "Dao.java");
 
                         File daofile = new File(daoDirectory, tc.getDomainObjectName() + "Dao.java");
-                        String mapperPackage = context.getJavaClientGeneratorConfiguration().getTargetPackage();
-                        File mapperDirectory = getDirectory(context.getJavaClientGeneratorConfiguration().getTargetProject(), mapperPackage);
+                        String mapperPackage = javaClientGeneratorConfiguration.getTargetPackage();
+                        File mapperDirectory = getDirectory(javaClientGeneratorConfiguration.getTargetProject(), mapperPackage);
                         String voPackage = context.getJavaModelGeneratorConfiguration().getTargetPackage();
-                        File voDirectory = getDirectory(context.getJavaClientGeneratorConfiguration().getTargetProject(), voPackage);
+                        File voDirectory = getDirectory(javaClientGeneratorConfiguration.getTargetProject(), voPackage);
                         File daoImplFile = new File(daoDirectory.getPath() + "/mybatis/impl/", tc.getDomainObjectName() + "DaoImpl.java");
                         File voFile = new File(voDirectory, tc.getDomainObjectName() + ".java");
                         File voExampleFile = new File(voDirectory, tc.getDomainObjectName() + "Example.java");

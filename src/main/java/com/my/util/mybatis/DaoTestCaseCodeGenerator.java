@@ -148,12 +148,12 @@ public class DaoTestCaseCodeGenerator {
         }
         return new Object[]{primaryInfo, columnNames};
     }
-    
+
     private static String parseDBName(String url) {
-    	int i = url.indexOf("?"); // seperator between body and parameters
-    	url = url.substring(0, i);
-    	i = url.indexOf("://");
-    	url = url.substring(i + 3);
+        int i = url.indexOf("?"); // seperator between body and parameters
+        url = url.substring(0, i);
+        i = url.indexOf("://");
+        url = url.substring(i + 3);
         i = url.indexOf("/");
         return url.substring(i + 1);
     }

@@ -31,7 +31,11 @@
         <table schema="thinker" tableName="user_info" domainObjectName="UserInfo">
             <generatedKey column="uid" sqlStatement="MySql" identity="true"/>
         </table>
-        <!--<table schema="access" tableName="p_channel_state" domainObjectName="ChannelState"/>-->
+        <table schema="thinker" tableName="code_info" domainObjectName="CodeInfo"/>
+        <table schema="thinker" tableName="arena_info" domainObjectName="ArenaInfo">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table schema="thinker" tableName="vote_info" domainObjectName="VoteInfo"/>
 
     </context>
 </generatorConfiguration>

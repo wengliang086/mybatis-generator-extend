@@ -82,7 +82,7 @@ public class Generator {
                     return sb.toString();
                 }
             };
-
+            config = dealConfiguration(config);
             MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
             myBatisGenerator.generate(null);
 
@@ -319,5 +319,26 @@ public class Generator {
             sb.append(readLine).append("\r\n");
         }
         return sb.toString();
+    }
+
+    private static final String projectPath = ClassLoader.getSystemResource("").getPath().replace("target/test-classes/", "");
+
+    private static Configuration dealConfiguration(Configuration configuration) {
+        if (configuration == null) {
+            return null;
+        }
+        System.out.println("path" + projectPath);
+        for (Context context : configuration.getContexts()) {
+            System.out.println(context);
+            String targetProject = context.getJavaModelGeneratorConfiguration().getTargetProject();
+            context.getJavaModelGeneratorConfiguration().setTargetProject(projectPath + targetProject);
+
+            String sqlMapGenerator = context.getSqlMapGeneratorConfiguration().getTargetProject();
+            context.getSqlMapGeneratorConfiguration().setTargetProject(projectPath + sqlMapGenerator);
+
+            String javaClientGenerator = context.getJavaClientGeneratorConfiguration().getTargetProject();
+            context.getJavaClientGeneratorConfiguration().setTargetProject(projectPath + javaClientGenerator);
+        }
+        return configuration;
     }
 }

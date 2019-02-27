@@ -26,7 +26,7 @@ import static org.mybatis.generator.internal.util.messages.Messages.getString;
 
 public class Generator {
 
-    public static List<IntrospectedTable> itrospectedTables;
+    public static List<IntrospectedTable> introspectedTables;
 
     public static void generate() {
         generate(null);
@@ -104,7 +104,7 @@ public class Generator {
 
             Field field = Context.class.getDeclaredField("introspectedTables");
             field.setAccessible(true);
-            itrospectedTables = (List<IntrospectedTable>) field.get(context);
+            introspectedTables = (List<IntrospectedTable>) field.get(context);
             Properties p = new Properties();
 
             ClassPathResource daoPathResource = new ClassPathResource("mybatis/dao.template");
@@ -115,7 +115,7 @@ public class Generator {
             String basedaoSourceTemplate = toString(basedaoPathResource.getInputStream());
 
             for (TableConfiguration tc : tableConfigurations) {
-                for (IntrospectedTable itable : itrospectedTables) {
+                for (IntrospectedTable itable : introspectedTables) {
                     if (tc.getTableName().equals(itable.getTableConfiguration().getTableName())) {
 
                         p.setProperty("mapper.package", javaClientGeneratorConfiguration.getTargetPackage());
@@ -331,14 +331,22 @@ public class Generator {
         for (Context context : configuration.getContexts()) {
             System.out.println(context);
             String targetProject = context.getJavaModelGeneratorConfiguration().getTargetProject();
-            context.getJavaModelGeneratorConfiguration().setTargetProject(projectPath + targetProject);
+            if (isRelativePath(targetProject))
+                context.getJavaModelGeneratorConfiguration().setTargetProject(projectPath + targetProject);
 
             String sqlMapGenerator = context.getSqlMapGeneratorConfiguration().getTargetProject();
-            context.getSqlMapGeneratorConfiguration().setTargetProject(projectPath + sqlMapGenerator);
+            if (isRelativePath(sqlMapGenerator))
+                context.getSqlMapGeneratorConfiguration().setTargetProject(projectPath + sqlMapGenerator);
 
             String javaClientGenerator = context.getJavaClientGeneratorConfiguration().getTargetProject();
-            context.getJavaClientGeneratorConfiguration().setTargetProject(projectPath + javaClientGenerator);
+            if (isRelativePath(javaClientGenerator))
+                context.getJavaClientGeneratorConfiguration().setTargetProject(projectPath + javaClientGenerator);
         }
         return configuration;
+    }
+
+    private static boolean isRelativePath(String path) {
+        // 不跨盘符会好使
+        return !(path.startsWith(projectPath) || ("/" + path).startsWith(projectPath));
     }
 }

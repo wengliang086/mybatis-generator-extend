@@ -43,7 +43,7 @@ public class DaoTestCaseCodeGenerator {
 
     private static boolean isInit = false;
 
-    private static List<IntrospectedTable> itrospectedTables = Generator.itrospectedTables;
+    private static List<IntrospectedTable> introspectedTables = Generator.introspectedTables;
 
     private synchronized static void init() {
         if (isInit) {
@@ -85,7 +85,7 @@ public class DaoTestCaseCodeGenerator {
     }
 
     private static IntrospectedTable getIntrospectedTable(String tableName) {
-        for (IntrospectedTable introspectedTable : itrospectedTables) {
+        for (IntrospectedTable introspectedTable : introspectedTables) {
             if (introspectedTable.getTableConfiguration().getTableName().equals(tableName)) {
                 return introspectedTable;
             }

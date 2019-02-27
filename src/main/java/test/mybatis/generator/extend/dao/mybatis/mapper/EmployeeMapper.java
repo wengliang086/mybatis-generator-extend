@@ -93,4 +93,8 @@ public interface EmployeeMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(Employee record);
+
+
+    ////*******自定义开始********/
+    //***********自定义结束****////
 }

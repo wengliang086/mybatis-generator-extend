@@ -132,4 +132,8 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+    ////*******自定义开始********/
+    //***********自定义结束****////
 }

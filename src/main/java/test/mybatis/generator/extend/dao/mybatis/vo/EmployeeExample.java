@@ -569,4 +569,8 @@ public class EmployeeExample {
             this(condition, value, secondValue, null);
         }
     }
+
+
+    ////*******自定义开始********/
+    //***********自定义结束****////
 }

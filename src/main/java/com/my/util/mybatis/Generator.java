@@ -9,7 +9,6 @@ import org.mybatis.generator.api.ShellCallback;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
 import org.mybatis.generator.config.*;
 import org.mybatis.generator.exception.ShellException;
-import org.mybatis.generator.internal.DefaultShellCallback;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.StringUtils;
@@ -34,56 +33,11 @@ public class Generator {
 
     public static void generate(final ShellCallback outCallback) {
         try {
-            List<String> warnings = new ArrayList<String>();
+            List<String> warnings = new ArrayList<>();
             HConfigurationParser cp = new HConfigurationParser(warnings);
             Configuration config = cp.parseConfiguration(new ClassPathResource("mybatis/generatorConfig.xml").getInputStream());
-            ShellCallback callback = new DefaultShellCallback(true) {
-
-                @Override
-                public boolean isMergeSupported() {
-                    return true;
-                }
-
-                @Override
-                public String mergeJavaFile(String newFileSource,
-                                            String existingFileFullPath, String[] javadocTags,
-                                            String fileEncoding) throws ShellException {
-                    newFileSource = appendCustomArea(newFileSource);
-
-                    File file = new File(existingFileFullPath);
-                    if (!file.exists()) {
-                        return newFileSource;
-                    }
-                    String oldSrouce = null;
-                    try {
-                        oldSrouce = Generator.toString(Files.readLines(file, Charsets.UTF_8));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    String merge = Generator.merge(newFileSource, oldSrouce);
-                    if (outCallback == null) {
-                        return merge;
-                    }
-                    return outCallback.mergeJavaFile(merge, existingFileFullPath, javadocTags, fileEncoding);
-                }
-
-                private String appendCustomArea(String newFileSource) {
-                    String[] split = newFileSource.split("(\r\n|\n+)");
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < split.length; i++) {
-                        if (i == split.length - 1) {
-                            sb.append("\r\n");
-                            sb.append("\r\n");
-                            sb.append("    ////*******自定义开始********/\r\n");
-                            sb.append("    //***********自定义结束****////\r\n");
-                        }
-                        sb.append(split[i]).append("\r\n");
-                    }
-                    return sb.toString();
-                }
-            };
             config = dealConfiguration(config);
-            MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+            MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, new MyExtendShellCallback(outCallback), warnings);
             myBatisGenerator.generate(null);
 
             for (String warString : warnings) {
@@ -224,8 +178,37 @@ public class Generator {
         if (matcher.find()) {
             source = source.replaceAll(regex, matcher.group());
         }
-        source = replaceImports(source, mergeImports);
+//        source = replaceImports(source, mergeImports);
+        source = useOldImports(source, oldSource);
         return source;
+    }
+
+    // 这种方式好处在于，版本控制不会发生变化
+    private static String useOldImports(String source, String oldSource) {
+        String[] split = source.split("\r\n");
+        String[] splitOld = oldSource.split("\r\n");
+        StringBuilder sb = new StringBuilder();
+        String startTag = null;
+        for (String line : splitOld) {
+            if (line.startsWith("package ") || line.startsWith("import ") || line.trim().length() == 0) {
+                sb.append(line).append("\r\n");
+            } else {
+                startTag = line;
+                break;
+            }
+        }
+        boolean needCheck = true;
+        for (String line : split) {
+            if (needCheck) {
+                if (line.equals(startTag)) {
+                    needCheck = false;
+                    sb.append(line).append("\r\n");
+                }
+            } else {
+                sb.append(line).append("\r\n");
+            }
+        }
+        return sb.toString();
     }
 
     private static String replaceImports(String source, List<String> mergeImports) {
@@ -303,7 +286,7 @@ public class Generator {
         return directory;
     }
 
-    private static String toString(List<String> readLines) {
+    static String toString(List<String> readLines) {
         StringBuilder ss = new StringBuilder();
         for (String s : readLines) {
             ss.append(s).append("\r\n");

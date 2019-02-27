@@ -12,7 +12,7 @@ import test.mybatis.generator.extend.dao.mybatis.vo.Employee;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
-    
+
     @Resource
     private EmployeeMapper employeeMapper;
 
@@ -35,9 +35,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public void delete(Integer id) {
         employeeMapper.deleteByPrimaryKey(id);
     }
-    
 
     ////*******自定义开始********//
     //**********自定义结束*****////
-    
+
 }

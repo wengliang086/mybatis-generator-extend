@@ -28,14 +28,9 @@
         <!--<table schema="db_user" tableName="u_login_info" domainObjectName="UserLoginInfo">
             <generatedKey column="uid" sqlStatement="MySql" identity="true"/>
         </table>-->
-        <table schema="thinker" tableName="user_info" domainObjectName="UserInfo">
-            <generatedKey column="uid" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table schema="thinker" tableName="code_info" domainObjectName="CodeInfo"/>
-        <table schema="thinker" tableName="arena_info" domainObjectName="ArenaInfo">
+        <table schema="mybatis_test" tableName="tbl_employee" domainObjectName="Employee">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
-        <table schema="thinker" tableName="vote_info" domainObjectName="VoteInfo"/>
 
     </context>
 </generatorConfiguration>

@@ -74,8 +74,8 @@ public class Generator {
                         if (i == split.length - 1) {
                             sb.append("\r\n");
                             sb.append("\r\n");
-                            sb.append("	       ////*******自定义开始********/\r\n");
-                            sb.append("        //***********自定义结束****////\r\n");
+                            sb.append("    ////*******自定义开始********/\r\n");
+                            sb.append("    //***********自定义结束****////\r\n");
                         }
                         sb.append(split[i]).append("\r\n");
                     }
@@ -224,11 +224,11 @@ public class Generator {
         if (matcher.find()) {
             source = source.replaceAll(regex, matcher.group());
         }
-        source = replateImports(source, mergeImports);
+        source = replaceImports(source, mergeImports);
         return source;
     }
 
-    private static String replateImports(String source, List<String> mergeImports) {
+    private static String replaceImports(String source, List<String> mergeImports) {
         String[] split = source.split("\r\n");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < split.length; i++) {
@@ -253,10 +253,10 @@ public class Generator {
 
     private static List<String> mergeImports(List<String> sourceImports,
                                              List<String> oldSourceImports) {
-        Set<String> set = new TreeSet<String>();
+        Set<String> set = new TreeSet<>();
         set.addAll(sourceImports);
         set.addAll(oldSourceImports);
-        return new ArrayList<String>(set);
+        return new ArrayList<>(set);
     }
 
     private static List<String> findImports(String source) {

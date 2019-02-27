@@ -3,10 +3,11 @@ package ${dao.package};
 import ${mybatis.vo.package}.${mybatis.vo.name};
 import ${primary.key.fulltype};
 
-public interface ${mybatis.vo.name}Dao extends Dao<${mybatis.vo.name},${primary.key.type}>{
 
-	
-	////*******自定义开始********//
-	//**********自定义结束*****////
+
+public interface ${mybatis.vo.name}Dao extends Dao<${mybatis.vo.name}, ${primary.key.type}> {
+
+    ////*******自定义开始********//
+    //**********自定义结束*****////
 
 }

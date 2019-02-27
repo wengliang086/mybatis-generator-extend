@@ -1,8 +1,9 @@
 package test.mybatis.generator.extend.dao;
 
 import java.lang.Integer;
-
 import test.mybatis.generator.extend.dao.mybatis.vo.Employee;
+
+
 
 public interface EmployeeDao extends Dao<Employee, Integer> {
 

@@ -1,5 +1,6 @@
 package test.mybatis.generator.extend.dao;
 
+
 public interface Dao<T, P> {
 
     void save(T t);

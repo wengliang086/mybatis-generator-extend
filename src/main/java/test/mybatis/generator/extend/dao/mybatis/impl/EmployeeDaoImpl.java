@@ -1,14 +1,13 @@
 package test.mybatis.generator.extend.dao.mybatis.impl;
 
-import java.lang.Integer;
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Repository;
+
 import test.mybatis.generator.extend.dao.EmployeeDao;
 import test.mybatis.generator.extend.dao.mybatis.mapper.EmployeeMapper;
 import test.mybatis.generator.extend.dao.mybatis.vo.Employee;
-
-
-
+import java.lang.Integer;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
